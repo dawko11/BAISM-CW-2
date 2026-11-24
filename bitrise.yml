@@ -1,0 +1,42 @@
+format_version: "13"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: android
+
+meta:
+  bitrise.io:
+    stack: ubuntu-noble-24.04-android
+    machine_type_id: standard
+
+workflows:
+  safe_build:
+    description: Unit tests, mobsfscan, debug APK and deploy to bitrise.io.
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@8: {}
+    - script@1:
+        title: Unit tests
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -euo pipefail
+            chmod +x ./gradlew
+            ./gradlew :app:testDebugUnitTest --stacktrace --no-daemon
+    - script@1:
+        title: mobsfscan
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -euo pipefail
+            python3 -m pip install --user "mobsfscan==1.2.0"
+            export PATH="${PATH}:${HOME}/.local/bin"
+            python3 -m mobsfscan . --type android --exit-warning
+    - android-build@1:
+        inputs:
+        - project_location: "$BITRISE_SOURCE_DIR"
+        - module: app
+        - variant: debug
+    - deploy-to-bitrise-io@2: {}
+
+trigger_map:
+- pull_request_target_branch: main
+  workflow: safe_build
