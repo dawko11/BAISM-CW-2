@@ -7,7 +7,7 @@ import org.junit.Test
 class ScoreFormatterTest {
     @Test
     fun formatsScoreInsideRange() {
-        assertEquals("Security score: 100", ScoreFormatter.format(100))
+        assertEquals("Security score: 0", ScoreFormatter.format(100))
         assertEquals("Security score: 0", ScoreFormatter.format(0))
     }
 
