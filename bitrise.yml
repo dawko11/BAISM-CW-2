@@ -11,7 +11,6 @@ workflows:
   safe_build:
     description: Unit tests, mobsfscan, debug APK and deploy to bitrise.io.
     steps:
-    - activate-ssh-key@4: {}
     - git-clone@8: {}
     - script@1:
         title: Unit tests
