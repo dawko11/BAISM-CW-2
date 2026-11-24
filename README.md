@@ -10,6 +10,8 @@ Workflow Bitrise `safe_build` uruchamia się przy pull requeście do `main` i wy
 4. budowę debug APK,
 5. publikację artefaktów na bitrise.io.
 
+Ten pull request sprawdza zielony przebieg `safe_build` (testy przechodzą).
+
 Lokalnie:
 
 ```bash
